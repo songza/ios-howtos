@@ -31,16 +31,31 @@
   } else {
     // Open a session showing the user the login UI
     // You must ALWAYS ask for basic_info permissions when opening a session
-    [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
-                                       allowLoginUI:YES
-                                  completionHandler:
-     ^(FBSession *session, FBSessionState state, NSError *error) {
-       
-       // Retrieve the app delegate
-       AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
-       // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
-       [appDelegate sessionStateChanged:session state:state error:error];
-     }];
+      
+      /* ORIGINAL SAMPLE CODE, WORKS!! */
+      
+//    [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
+//                                       allowLoginUI:YES
+//                                  completionHandler:
+//     ^(FBSession *session, FBSessionState state, NSError *error) {
+//       
+//       // Retrieve the app delegate
+//       AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+//       // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
+//       [appDelegate sessionStateChanged:session state:state error:error];
+//     }];
+      
+      
+      /* OPEN WITH BEHAVIOR, DOESN'T WORK! */
+      FBSession *facebookSession = [[FBSession alloc] initWithPermissions:@[@"basic_info"]];
+      [facebookSession openWithBehavior:FBSessionLoginBehaviorWithFallbackToWebView
+                      completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
+                          // Retrieve the app delegate
+                          AppDelegate* appDelegate = [UIApplication sharedApplication].delegate;
+                          // Call the app delegate's sessionStateChanged:state:error method to handle session state changes
+                          [appDelegate sessionStateChanged:session state:state error:error];
+                      }];
+
   }
 }
 
