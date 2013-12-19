@@ -32,7 +32,7 @@
     // Open a session showing the user the login UI
     // You must ALWAYS ask for basic_info permissions when opening a session
       
-      /* ORIGINAL SAMPLE CODE, WORKS!! */
+      /* ORIGINAL SAMPLE CODE */
       
 //    [FBSession openActiveSessionWithReadPermissions:@[@"basic_info"]
 //                                       allowLoginUI:YES
@@ -45,9 +45,11 @@
 //       [appDelegate sessionStateChanged:session state:state error:error];
 //     }];
       
-      
-      /* OPEN WITH BEHAVIOR, DOESN'T WORK! */
+
+      /* OPEN WITH BEHAVIOR */
       FBSession *facebookSession = [[FBSession alloc] initWithPermissions:@[@"basic_info"]];
+      [FBSession setActiveSession:facebookSession];
+      NSLog(@"FBSession state before openWithBehavior: %d", facebookSession.state);
       [facebookSession openWithBehavior:FBSessionLoginBehaviorWithFallbackToWebView
                       completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
                           // Retrieve the app delegate
